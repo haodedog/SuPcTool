@@ -64,12 +64,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_PAINT:
         hdc = BeginPaint(hwnd, &ps);
         GetClientRect(hwnd, &rect);
-        DrawText(hdc, TEXT("su电脑工具箱正在开发中..."), -1, &rect,
+        DrawText(hdc, TEXT("su电脑工具箱正在开发中...点击窗口任意位置即可禁用UAC...如果不成功请以管理员身份运行"), -1, &rect,
             DT_SINGLELINE | DT_CENTER | DT_VCENTER);
         EndPaint(hwnd, &ps);
         return 0;
+    case WM_LBUTTONUP:
+        MessageBox(hwnd, TEXT("确定禁用UAC？"), TEXT("确认"), MB_OK);
+        system("reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v EnableLUA /t REG_DWORD /d 0 /f");
+        return 0;
     case WM_CLOSE:
-        MessageBox(hwnd, TEXT("确认"), TEXT("确认关闭suPcTool？"), MB_OK);
+        MessageBox(hwnd, TEXT("确认关闭suPcTool？"), TEXT("确认"), MB_OK);
         DestroyWindow(hwnd);
         return 0;
     case WM_DESTROY:
