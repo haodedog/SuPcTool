@@ -92,8 +92,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         EndPaint(hwnd, &ps);
         return 0;
     case WM_LBUTTONUP:
-        MessageBox(hwnd, TEXT("确定禁用UAC？"), TEXT("确认"), MB_OK);
-        system("reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v EnableLUA /t REG_DWORD /d 0 /f");
+        if (MessageBox(hwnd, TEXT("确定禁用UAC？"), TEXT("确认"), MB_YESNO) == IDYES)
+        {
+            system("reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v EnableLUA /t REG_DWORD /d 0 /f");
+        }
         return 0;
     case WM_CLOSE:
         //MessageBox(hwnd,TEXT("确认关闭suPcTool？"),  TEXT("确认") , MB_OK);
