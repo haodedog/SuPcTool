@@ -58,14 +58,35 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
     HDC hdc;
     PAINTSTRUCT ps;
     RECT rect;
-
+    static size_t cxClient, cyClient;
+    static TCHAR szBufferDisplayResolution[128];//显示器分辨率
+    static TCHAR welcome[] = TEXT("su电脑工具箱正在开发中...点击窗口任意位置即可禁用UAC...如果不成功请以管理员身份运行");
+    static size_t LineInterval;
     switch (message)
     {
+
+    case WM_CREATE:
+        //创建窗口的时候获取字符信息
+        hdc = GetDC(hwnd);
+        TEXTMETRIC tm;
+        GetTextMetrics(hdc, &tm);
+        LineInterval = tm.tmHeight;
+        ReleaseDC(hwnd, hdc);
+        return 0;
     case WM_PAINT:
         hdc = BeginPaint(hwnd, &ps);
         GetClientRect(hwnd, &rect);
-        DrawText(hdc, TEXT("su电脑工具箱正在开发中...点击窗口任意位置即可禁用UAC...如果不成功请以管理员身份运行"), -1, &rect,
-            DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+
+        cxClient = GetSystemMetrics(SM_CXSCREEN);
+        cyClient = GetSystemMetrics(SM_CYSCREEN);
+
+        wsprintf(szBufferDisplayResolution, TEXT("当前显示器分辨率是：%d*%d"), cxClient, cyClient);
+        SetTextAlign(hdc, TA_CENTER);
+
+        TextOut(hdc, rect.right / 2, rect.bottom / 2 - LineInterval, welcome, lstrlen(welcome));
+
+        TextOut(hdc, rect.right / 2, rect.bottom / 2, szBufferDisplayResolution, lstrlen(szBufferDisplayResolution));
+
         EndPaint(hwnd, &ps);
         return 0;
     case WM_LBUTTONUP:
