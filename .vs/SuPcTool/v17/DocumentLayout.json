@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "E:\\my_project\\SuPcTool\\",
+  "WorkspaceRootPath": "D:\\\u684C\u9762\\SuPcTool\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C8F3C3C4-8C14-4578-AC02-016713C91079}|SuPcTool\\SuPcTool.vcxproj|E:\\my_project\\SuPcTool\\SuPcTool\\SuPcTool.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{C8F3C3C4-8C14-4578-AC02-016713C91079}|SuPcTool\\SuPcTool.vcxproj|D:\\\u684C\u9762\\SuPcTool\\SuPcTool\\SuPcTool.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{C8F3C3C4-8C14-4578-AC02-016713C91079}|SuPcTool\\SuPcTool.vcxproj|solutionrelative:SuPcTool\\SuPcTool.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -20,11 +20,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "SuPcTool.cpp",
-              "DocumentMoniker": "E:\\my_project\\SuPcTool\\SuPcTool\\SuPcTool.cpp",
+              "DocumentMoniker": "D:\\\u684C\u9762\\SuPcTool\\SuPcTool\\SuPcTool.cpp",
               "RelativeDocumentMoniker": "SuPcTool\\SuPcTool.cpp",
-              "ToolTip": "E:\\my_project\\SuPcTool\\SuPcTool\\SuPcTool.cpp",
+              "ToolTip": "D:\\\u684C\u9762\\SuPcTool\\SuPcTool\\SuPcTool.cpp",
               "RelativeToolTip": "SuPcTool\\SuPcTool.cpp",
-              "ViewState": "AQIAAEoAAAAAAAAAAAAAwGsAAAAAAAAA",
+              "ViewState": "AQIAAE4AAAAAAAAAAAAAAFYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-06-22T14:22:59.106Z",
               "EditorCaption": ""
