@@ -1,5 +1,6 @@
 ﻿#include<Windows.h>
-
+#include<windowsx.h>
+#include<strsafe.h>
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int iCmdShow)
@@ -62,6 +63,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
     static TCHAR szBufferDisplayResolution[128];//显示器分辨率
     static TCHAR welcome[] = TEXT("su电脑工具箱正在开发中...点击窗口任意位置即可禁用UAC...如果不成功请以管理员身份运行");
     static size_t LineInterval;
+    
+    // 这个变量用来保存显示器分辨率提示信息长度
+    size_t iTarget;
+    
     switch (message)
     {
 
@@ -79,15 +84,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         cxClient = GetSystemMetrics(SM_CXSCREEN);
         cyClient = GetSystemMetrics(SM_CYSCREEN);
+        
+        //把显示器信息写入字符数组缓冲区
+        StringCchPrintf(szBufferDisplayResolution,128,TEXT("当前显示器分辨率是：%d * %d", cxClient,cyClient);
+        StringCchLength(szBufferDisplayResolution,128,&iTarget);
 
-        wsprintf(szBufferDisplayResolution, TEXT("当前显示器分辨率是：%d*%d"), cxClient, cyClient);
+        //设置TextOut函数显示模式，基准点为中间
         SetTextAlign(hdc, TA_CENTER);
 
         TextOut(hdc, rect.right / 2, rect.bottom / 2 - LineInterval, welcome, lstrlen(welcome));
 
-        TextOut(hdc, rect.right / 2, rect.bottom / 2, szBufferDisplayResolution, lstrlen(szBufferDisplayResolution));
-
-        TextOut(hdc, rect.right / 2, rect.bottom / 2 - 2 * LineInterval, TEXT("汇汇，我希望你永远记得，我喜欢你"), 16);
+        TextOut(hdc, rect.right / 2, rect.bottom / 2, szBufferDisplayResolution, iTarget);
+        //为了活命，这一句不要了
+        //TextOut(hdc, rect.right / 2, rect.bottom / 2 - 2 * LineInterval, TEXT("高文汇，我希望你永远记得，我喜欢你"), 16);
 
         EndPaint(hwnd, &ps);
         return 0;
