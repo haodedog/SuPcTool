@@ -1,10 +1,11 @@
-﻿#include<Windows.h>
-
+﻿#include<windows.h>
+#include<windowsx.h>
+#include<strsafe.h>
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int iCmdShow)
 {
-    static TCHAR szAppName[] = TEXT("suPcTool");
+    static TCHAR szAppName[] = TEXT("SuPcTool");
     //MessageBox(NULL, TEXT("作者正在努力制作哦，请稍等..."), TEXT("suPcTool"), MB_OK);
     HWND hwnd;
     MSG msg;
@@ -58,10 +59,24 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
     HDC hdc;
     PAINTSTRUCT ps;
     RECT rect;
-    static size_t cxClient, cyClient;
-    static TCHAR szBufferDisplayResolution[128];//显示器分辨率
-    static TCHAR welcome[] = TEXT("su电脑工具箱正在开发中...点击窗口任意位置即可禁用UAC...如果不成功请以管理员身份运行");
+
+    //屏幕的宽度和高度
+    static size_t xScreen, yScreen;
+    
+    //原本的字符信息
+    UINT TextAlign;
+
+    //显示器分辨率的字符串缓冲区
+    static TCHAR DisplayResolutionBuffer[128];
+    //固定欢迎语
+    PTCHAR Welcome = (PTCHAR)TEXT("su电脑工具箱正在开发中...点击窗口任意位置即可禁用UAC...如果不成功请以管理员身份运行");
+    //一个字符的高度，也是一行的高度
     static size_t LineInterval;
+
+    // 这个变量用来保存显示器分辨率提示信息长度,然后用来保存欢迎语句的长度
+    size_t iTarget;
+
+    
     switch (message)
     {
 
@@ -77,18 +92,31 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
         hdc = BeginPaint(hwnd, &ps);
         GetClientRect(hwnd, &rect);
 
-        cxClient = GetSystemMetrics(SM_CXSCREEN);
-        cyClient = GetSystemMetrics(SM_CYSCREEN);
+        //获取显示器的宽度和高度
+        xScreen = GetSystemMetrics(SM_CXSCREEN);
+        yScreen = GetSystemMetrics(SM_CYSCREEN);
 
-        wsprintf(szBufferDisplayResolution, TEXT("当前显示器分辨率是：%d*%d"), cxClient, cyClient);
+        //先获取原本的字符显示模式
+        TextAlign = GetTextAlign(hdc);
+
+        //设置TextOut函数显示模式，基准点为中间
         SetTextAlign(hdc, TA_CENTER);
 
-        TextOut(hdc, rect.right / 2, rect.bottom / 2 - LineInterval, welcome, lstrlen(welcome));
+        //显示欢迎信息
+        StringCchLength(Welcome, 1024, &iTarget);
+        TextOut(hdc, rect.right / 2, rect.bottom / 2 - LineInterval, Welcome, iTarget);
 
-        TextOut(hdc, rect.right / 2, rect.bottom / 2, szBufferDisplayResolution, lstrlen(szBufferDisplayResolution));
+        //把显示器信息写入字符数组缓冲区
+        StringCchPrintf(DisplayResolutionBuffer, 128, TEXT("当前显示器分辨率是：%d * %d"), xScreen, yScreen);
+        StringCchLength(DisplayResolutionBuffer, 128, &iTarget);
 
-        TextOut(hdc, rect.right / 2, rect.bottom / 2 - 2 * LineInterval, TEXT("汇汇，我希望你永远记得，我喜欢你"), 16);
+        //打印出显示器信息，打印到客户区正中间
+        TextOut(hdc, rect.right / 2, rect.bottom / 2, DisplayResolutionBuffer, iTarget);
+        //为了活命，这一句不要了
+        //TextOut(hdc, rect.right / 2, rect.bottom / 2 - 2 * LineInterval, TEXT("高文汇，我希望你永远记得，我喜欢你"), 16);
 
+        //把原本的文本显示模式还回去
+        SetTextAlign(hdc, TextAlign);
         EndPaint(hwnd, &ps);
         return 0;
     case WM_LBUTTONUP:
